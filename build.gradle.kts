@@ -10,6 +10,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.simplejavamail:simple-java-mail:8.12.4")
+
     testImplementation(kotlin("test"))
 }
 
