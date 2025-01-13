@@ -1,29 +1,29 @@
-package ch.rmy.secretsanta
+package ch.rmy.secretsanta.email
 
 import org.simplejavamail.api.mailer.Mailer as SimpleMailer
 import org.simplejavamail.api.mailer.config.TransportStrategy
 import org.simplejavamail.email.EmailBuilder
 import org.simplejavamail.mailer.MailerBuilder
 
-class Mailer {
-
+class Mailer(
+    serverConfig: ServerConfig,
+) {
     private val mailer: SimpleMailer = MailerBuilder
-        .withSMTPServer("TODO", 993, "TODO", "TODO")
+        .withSMTPServer(serverConfig.host, serverConfig.port, serverConfig.username, serverConfig.password)
         .withTransportStrategy(TransportStrategy.SMTP_TLS)
-        .withDebugLogging(true)
         .buildMailer()
 
     fun sendEmail(
-        address: String,
-        name: String,
+        sender: EmailContact,
+        receiver: EmailContact,
         subject: String,
-        htmlMessage: String,
+        htmlBody: String,
     ) {
         val email = EmailBuilder.startingBlank()
-            .to(name, address)
-            .from("TODO")
+            .to(receiver.name, receiver.emailAddress)
+            .from(sender.name, sender.emailAddress)
             .withSubject(subject)
-            .withHTMLText(htmlMessage)
+            .withHTMLText(htmlBody)
             .buildEmail()
 
         mailer.sendMail(email)

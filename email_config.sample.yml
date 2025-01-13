@@ -1,0 +1,16 @@
+server:
+  host: mail.example.com
+  port: 25
+  username: santa@example.com
+  password: Password1
+message:
+  senderAddress: santa@example.com
+  senderName: Secret Santa
+  subject: Secret Santa {year}
+  htmlBody: >
+    Hello {gifter.name}<br><br>
+    This year you are the secret santa for <b>{giftee.name}</b>.<br>
+    I hope you'll find a nice gift for them.
+    <br>
+    Best wishes<br><br>
+    Secret Santinator

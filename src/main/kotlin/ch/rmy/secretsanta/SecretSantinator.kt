@@ -1,5 +1,7 @@
 package ch.rmy.secretsanta
 
+import ch.rmy.secretsanta.people.PeopleProvider
+
 class SecretSantinator(
     private val peopleProvider: PeopleProvider,
     private val matchMaker: MatchMaker,

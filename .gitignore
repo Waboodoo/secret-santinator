@@ -44,5 +44,7 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-
+### App specific ###
 last_run.txt
+people.yml
+email_config.yml

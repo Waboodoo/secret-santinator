@@ -1,0 +1,18 @@
+package ch.rmy.secretsanta.people
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Person(
+    val name: String,
+    val email: String,
+    val id: String = generateId(name, email),
+)
+
+private fun generateId(name: String, email: String): String =
+    arrayOf(
+        name.first(),
+        name.last(),
+        String.format("%04d", (name + email).chars().sum().mod(10000)),
+    )
+        .joinToString(separator = "")

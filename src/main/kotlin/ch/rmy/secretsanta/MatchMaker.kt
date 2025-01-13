@@ -1,5 +1,6 @@
 package ch.rmy.secretsanta
 
+import ch.rmy.secretsanta.people.Person
 import kotlin.random.Random
 
 class MatchMaker(
