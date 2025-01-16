@@ -5,10 +5,11 @@ import ch.rmy.secretsanta.people.PeopleProvider
 import java.io.File
 import java.time.Instant
 
+private const val ARG_DRY = "-dry"
 private const val LAST_RUN_FILE = "last_run.txt"
 
-fun main() {
-    val dryRun = true
+fun main(args: Array<String>) {
+    val dryRun = args.any { it == ARG_DRY }
     if (!dryRun) {
         verifyNotRunYet()
     }
