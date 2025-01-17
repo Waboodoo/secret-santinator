@@ -1,6 +1,6 @@
 package ch.rmy.secretsanta.email
 
-import ch.rmy.secretsanta.Match
+import ch.rmy.secretsanta.mapping.Match
 import ch.rmy.secretsanta.MappingHandler
 import ch.rmy.secretsanta.people.Person
 import java.time.LocalDate

@@ -1,4 +1,4 @@
-package ch.rmy.secretsanta
+package ch.rmy.secretsanta.mapping
 
 import ch.rmy.secretsanta.people.Person
 

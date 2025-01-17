@@ -1,15 +1,17 @@
 package ch.rmy.secretsanta
 
+import ch.rmy.secretsanta.mapping.Match
+import ch.rmy.secretsanta.mapping.SingleCycleMatchMaker
 import ch.rmy.secretsanta.people.Person
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class MatchMakerTest {
+class SingleCycleMatchMakerTest {
 
     @Test
     fun `matches with 6 people`() {
-        val matchMaker = MatchMaker(
+        val matchMaker = SingleCycleMatchMaker(
             random = Random(seed = 1234),
         )
         val people = setOf(

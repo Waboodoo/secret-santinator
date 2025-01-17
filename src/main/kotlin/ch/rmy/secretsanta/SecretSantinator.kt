@@ -1,5 +1,6 @@
 package ch.rmy.secretsanta
 
+import ch.rmy.secretsanta.mapping.MatchMaker
 import ch.rmy.secretsanta.people.PeopleProvider
 
 class SecretSantinator(

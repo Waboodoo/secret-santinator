@@ -1,6 +1,9 @@
 package ch.rmy.secretsanta
 
 import ch.rmy.secretsanta.email.EmailMappingHandler
+import ch.rmy.secretsanta.mapping.SingleCycleMatchMaker
+import ch.rmy.secretsanta.mapping.VarietyMatchMaker
+import ch.rmy.secretsanta.output.PastMappingReader
 import ch.rmy.secretsanta.output.StoreMappingHandler
 import ch.rmy.secretsanta.people.PeopleProvider
 import java.io.File
@@ -17,7 +20,10 @@ fun main(args: Array<String>) {
 
     SecretSantinator(
         peopleProvider = PeopleProvider(),
-        matchMaker = MatchMaker(),
+        matchMaker = VarietyMatchMaker(
+            delegate = SingleCycleMatchMaker(),
+            discouragedMappings = PastMappingReader().read(),
+        ),
         mappingHandlers = buildList {
             if (dryRun) {
                 add(PrintMappingHandler)

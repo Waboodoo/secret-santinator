@@ -6,10 +6,10 @@ import kotlinx.serialization.Serializable
 data class Person(
     val name: String,
     val email: String,
-    val id: String = generateId(name, email),
+    val id: PersonId = generateId(name, email),
 )
 
-private fun generateId(name: String, email: String): String =
+private fun generateId(name: String, email: String): PersonId =
     arrayOf(
         name.first(),
         name.last(),

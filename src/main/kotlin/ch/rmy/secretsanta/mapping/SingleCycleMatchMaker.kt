@@ -1,14 +1,12 @@
-package ch.rmy.secretsanta
+package ch.rmy.secretsanta.mapping
 
 import ch.rmy.secretsanta.people.Person
 import kotlin.random.Random
 
-class MatchMaker(
+class SingleCycleMatchMaker(
     private val random: Random = Random,
-) {
-    fun run(
-        people: Set<Person>,
-    ): Set<Match> {
+) : MatchMaker {
+    override fun run(people: Set<Person>): Set<Match> {
         require(people.size >= 2) { "At least 2 people are required" }
 
         val gifters = people.shuffled(random)
