@@ -25,5 +25,4 @@ Once the config files are set up, you can run
 ## To Do
 
 - Allow generating multi-cycle mappings
-- Store mapping into file
 - Allow providing list of forbidden / discouraged mappings

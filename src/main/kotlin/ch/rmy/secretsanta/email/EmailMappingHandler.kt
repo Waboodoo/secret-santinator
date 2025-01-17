@@ -1,21 +1,21 @@
 package ch.rmy.secretsanta.email
 
 import ch.rmy.secretsanta.Match
-import ch.rmy.secretsanta.MatchHandler
+import ch.rmy.secretsanta.MappingHandler
 import ch.rmy.secretsanta.people.Person
 import java.time.LocalDate
 
-class EmailMatchHandler(
+class EmailMappingHandler(
     private val configProvider: EmailConfigProvider = EmailConfigProvider(),
     mailerFactory: MailerFactory = MailerFactory(),
-) : MatchHandler {
+) : MappingHandler {
     private val mailer = mailerFactory.create(configProvider.server)
     private val sender = with(configProvider.message) {
         EmailContact(senderName, senderAddress)
     }
 
-    override fun handle(matches: Set<Match>) {
-        matches.forEach { match ->
+    override fun handle(mapping: Set<Match>) {
+        mapping.forEach { match ->
             mailer.sendEmail(
                 sender,
                 receiver = match.gifter.toEmailContact(),

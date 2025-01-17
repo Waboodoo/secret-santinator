@@ -1,0 +1,1 @@
+When a mapping is generated, it is stored in this directory as a JSON file.

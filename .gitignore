@@ -48,3 +48,4 @@ bin/
 last_run.txt
 people.yml
 email_config.yml
+mappings/**.json

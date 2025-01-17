@@ -1,6 +1,7 @@
 package ch.rmy.secretsanta
 
-import ch.rmy.secretsanta.email.EmailMatchHandler
+import ch.rmy.secretsanta.email.EmailMappingHandler
+import ch.rmy.secretsanta.output.StoreMappingHandler
 import ch.rmy.secretsanta.people.PeopleProvider
 import java.io.File
 import java.time.Instant
@@ -17,10 +18,13 @@ fun main(args: Array<String>) {
     SecretSantinator(
         peopleProvider = PeopleProvider(),
         matchMaker = MatchMaker(),
-        matchHandler = if (dryRun) {
-            PrintMatchHandler
-        } else {
-            EmailMatchHandler()
+        mappingHandlers = buildList {
+            if (dryRun) {
+                add(PrintMappingHandler)
+            } else {
+                add(StoreMappingHandler())
+                add(EmailMappingHandler())
+            }
         },
     )
         .run()
