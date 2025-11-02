@@ -15,16 +15,19 @@ class VarietyScorer(
     override fun score(matches: Set<Match>): Int {
 
         return mappings.fold(0) { score, pastMapping ->
-            score + (calculateFactorFor(pastMapping.year) * scoreVsOne(matches, pastMapping.matches)).roundToInt()
+            score + (calculateFactorFor(pastMapping) * scoreVsOne(matches, pastMapping.matches)).roundToInt()
         }
     }
 
-    private fun calculateFactorFor(year: Int?): Float {
-        if (year == null) {
+    private fun calculateFactorFor(pastMapping: Mapping): Float {
+        if (pastMapping.scoreMultiplier != null) {
+            return pastMapping.scoreMultiplier
+        }
+        if (pastMapping.year == null) {
             return 1.0f
         }
         val currentYear = timeProvider.now().year
-        val timePassed = currentYear - year
+        val timePassed = currentYear - pastMapping.year
         if (timePassed <= 1) {
             return 1.0f
         }

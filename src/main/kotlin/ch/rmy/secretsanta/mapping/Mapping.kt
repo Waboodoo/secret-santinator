@@ -7,4 +7,5 @@ import kotlinx.serialization.Serializable
 data class Mapping(
     val matches: Map<PersonId, PersonId>,
     val year: Int? = null,
+    val scoreMultiplier: Float? = null,
 )
