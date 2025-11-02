@@ -3,10 +3,13 @@ package ch.rmy.secretsanta
 import ch.rmy.secretsanta.email.EmailMappingHandler
 import ch.rmy.secretsanta.email.Mailer
 import ch.rmy.secretsanta.mapping.SingleCycleMatchMaker
-import ch.rmy.secretsanta.mapping.VarietyMatchMaker
-import ch.rmy.secretsanta.PastMappingReader
+import ch.rmy.secretsanta.mapping.ScoredMatchMaker
+import ch.rmy.secretsanta.mapping.UnconstrainedMatchMaker
 import ch.rmy.secretsanta.output.StoreMappingHandler
 import ch.rmy.secretsanta.people.PeopleProvider
+import ch.rmy.secretsanta.scoring.CompositeScorer
+import ch.rmy.secretsanta.scoring.CycleLengthScorer
+import ch.rmy.secretsanta.scoring.VarietyScorer
 import java.io.File
 import java.time.Instant
 import kotlin.let
@@ -23,17 +26,26 @@ fun main(args: Array<String>) {
             ?.let(::sanitizeConfigName)
             ?: error("No valid config name provided")
 
-        verifyNotRunYet(configName)
+        //verifyNotRunYet(configName)
 
         val configDir = File(CONFIG_PREFIX + configName)
         val mappingsDir = File(ConfigFiles.MAPPINGS_DIR, configName)
-        val mappings = PastMappingReader(
+        val pastMappings = PastMappingReader(
             mappingsDirectory = mappingsDir,
         ).read()
 
-        val matchMaker = VarietyMatchMaker(
-            delegate = SingleCycleMatchMaker(),
-            discouragedMappings = mappings,
+        val matchMaker = ScoredMatchMaker(
+            delegate = UnconstrainedMatchMaker(
+                delegate = SingleCycleMatchMaker(),
+            ),
+            scorer = CompositeScorer(
+                scorers = listOf(
+                    CycleLengthScorer(),
+                    VarietyScorer(
+                        mappings = pastMappings,
+                    ),
+                ),
+            ),
         )
 
         SecretSantinator(

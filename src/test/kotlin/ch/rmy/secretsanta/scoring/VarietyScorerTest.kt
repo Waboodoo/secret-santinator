@@ -190,5 +190,4 @@ class VarietyScorerTest {
     }
 
 
-
 }

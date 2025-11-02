@@ -14,7 +14,9 @@ class UnconstrainedMatchMaker(
     override fun run(people: Set<Person>): Set<Match> {
         val subdivisions = subdivisionGenerator.generate(n = people.size)
         val subdivision = subdivisions.random(random)
-        val peopleIterator = people.iterator()
+        val peopleIterator = people
+            .shuffled(random)
+            .iterator()
 
         return subdivision
             .map { n ->

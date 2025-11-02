@@ -13,11 +13,13 @@ class ScoredMatchMaker(
 
     fun <T> pickByWeight(candidates: List<T>, weights: List<Int>): T {
         val min = weights.min()
-        val weights_positive = weights.map { s -> s - min }
+        val weightsPositive = weights.map { s -> s - min }
 
-        val cdf = weights_positive.scan(0) { sum, score ->
-            sum + score
-        }.drop(1)
+        val cdf = weightsPositive
+            .scan(0) { sum, score ->
+                sum + score
+            }
+            .drop(1)
 
         val cdfmax = cdf.max()
 
@@ -27,19 +29,18 @@ class ScoredMatchMaker(
 
         val pick = random.nextFloat() * cdfmax
         val choice = cdf.indexOfFirst { cdfscore -> cdfscore > pick }
+        println("Choice: $choice")
 
         return candidates[choice]
-
     }
 
     override fun run(people: Set<Person>): Set<Match> {
-        require(people.size >= 2) { "At least 2 people are required" }
-
         val candidates = List(iterations) { delegate.run(people) }
 
         val scores = candidates.map { candidate ->
             scorer.score(candidate)
         }
+        println("Scores: $scores")
 
         return pickByWeight(candidates, scores)
 
