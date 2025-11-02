@@ -40,6 +40,6 @@ class SingleCycleMatchMakerTest {
         val PERSON5 = person("5")
         val PERSON6 = person("6")
 
-        private fun person(id: String) = Person(id = id, name = "", email = "")
+        private fun person(id: String) = Person(id = id, name = "Person$id", email = "person$id@example.com")
     }
 }
