@@ -8,6 +8,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToStream
 import java.io.File
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class StoreMappingHandler(
@@ -21,14 +22,16 @@ class StoreMappingHandler(
 
     @OptIn(ExperimentalSerializationApi::class)
     override fun handle(matches: Set<Match>) {
+        val now = timeProvider.now()
+
         mappingsDirectory.mkdirs()
-        val outputFile = File(mappingsDirectory, createFileName())
+        val outputFile = File(mappingsDirectory, createFileName(now))
 
         val mapping = Mapping(
             matches = matches.associate { (gifter, giftee) ->
                 gifter.id to giftee.id
             },
-            year = timeProvider.now().year,
+            year = now.year,
         )
 
         outputFile.outputStream().use { outStream ->
@@ -36,8 +39,6 @@ class StoreMappingHandler(
         }
     }
 
-    private fun createFileName(): String {
-        val timestamp = DateTimeFormatter.ISO_DATE.format(timeProvider.now())
-        return "${timestamp.replace(":", "_")}.json"
-    }
+    private fun createFileName(now: LocalDate) =
+        DateTimeFormatter.ISO_DATE.format(now) + ".json"
 }
