@@ -14,13 +14,15 @@ The key bit of Secret Santa is that the assigning of gifter to giftee is done in
 
 ## How do I configure this thing?
 
-You need to write the 2 config files:
+You need to write the 3 config files:
 
-The `email_config.yml` file includes all the settings for the email sending such as mail server credentials and the content of the email. You can copy the `email_config.sample.yml` file as a template. Simply copy it, rename it to `email_config.yml` and fill in all the details.
+- The `email_server.yml` file includes the settings for sending emails, such as mail server credentials.
+- The `email_message.yml` file includes the contents of the email that will be sent to people.
+- The `people.yml` file includes a list of all participants. Each person consists of a `name` and an `email`, and optionally an `id`, which may be used in the email subject or body.
 
-The `people.yml` file includes a list of all participants. Each person consists of a `name` and an `email`, and optionally an `id`, which may be used in the email subject or body. You can copy the `people.sample.yml` file as a template.
+You can copy the `config.sample` directory to get started with templates for these files. The config files need to be in a directory prefixed with "config-".
 
-Once the config files are set up, you can run 
+Once the config files are set up, you can run the program and provide the name of your config directory as an argument.
 
 ## To Do
 

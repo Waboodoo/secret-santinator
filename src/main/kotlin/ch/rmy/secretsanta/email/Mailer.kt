@@ -6,7 +6,7 @@ import org.simplejavamail.email.EmailBuilder
 import org.simplejavamail.mailer.MailerBuilder
 
 class Mailer(
-    serverConfig: ServerConfig,
+    serverConfig: EmailServerConfig,
 ) {
     private val mailer: SimpleMailer = MailerBuilder
         .withSMTPServer(serverConfig.host, serverConfig.port, serverConfig.username, serverConfig.password)

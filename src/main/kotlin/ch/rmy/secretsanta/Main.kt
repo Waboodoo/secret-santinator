@@ -1,6 +1,7 @@
 package ch.rmy.secretsanta
 
 import ch.rmy.secretsanta.email.EmailMappingHandler
+import ch.rmy.secretsanta.email.Mailer
 import ch.rmy.secretsanta.mapping.SingleCycleMatchMaker
 import ch.rmy.secretsanta.mapping.VarietyMatchMaker
 import ch.rmy.secretsanta.output.PastMappingReader
@@ -8,39 +9,74 @@ import ch.rmy.secretsanta.output.StoreMappingHandler
 import ch.rmy.secretsanta.people.PeopleProvider
 import java.io.File
 import java.time.Instant
+import kotlin.let
+import kotlin.system.exitProcess
 
 private const val ARG_DRY = "-dry"
-private const val LAST_RUN_FILE = "last_run.txt"
+private const val CONFIG_PREFIX = "config-"
 
 fun main(args: Array<String>) {
-    val dryRun = args.any { it == ARG_DRY }
-    if (!dryRun) {
-        verifyNotRunYet()
-    }
+    try {
+        val dryRun = args.any { it == ARG_DRY }
+        val configName = args.firstOrNull { it != ARG_DRY }
+            ?.removePrefix(CONFIG_PREFIX)
+            ?.let(::sanitizeConfigName)
+            ?: error("No valid config name provided")
 
-    SecretSantinator(
-        peopleProvider = PeopleProvider(),
-        matchMaker = VarietyMatchMaker(
-            delegate = SingleCycleMatchMaker(),
-            discouragedMappings = PastMappingReader().read(),
-        ),
-        mappingHandlers = buildList {
-            if (dryRun) {
-                add(PrintMappingHandler)
-            } else {
-                add(StoreMappingHandler())
-                add(EmailMappingHandler())
-            }
-        },
-    )
-        .run()
+        verifyNotRunYet(configName)
+
+        val configDir = File(CONFIG_PREFIX + configName)
+        val mappingsDir = File(ConfigFiles.MAPPINGS_DIR, configName)
+
+        SecretSantinator(
+            peopleProvider = PeopleProvider(
+                configFile = File(configDir, ConfigFiles.PEOPLE)
+            ),
+            matchMaker = VarietyMatchMaker(
+                delegate = SingleCycleMatchMaker(),
+                discouragedMappings = PastMappingReader(
+                    mappingsDirectory = mappingsDir,
+                ).read(),
+            ),
+            mappingHandlers = buildList {
+                add(
+                    StoreMappingHandler(
+                        mappingsDirectory = mappingsDir,
+                    )
+                )
+                if (dryRun) {
+                    add(PrintMappingHandler)
+                } else {
+                    add(
+                        EmailMappingHandler(
+                            messageConfig = File(configDir, ConfigFiles.EMAIL_MESSAGE).readYaml(),
+                            mailer = Mailer(
+                                File(configDir, ConfigFiles.EMAIL_SERVER).readYaml()
+                            )
+                        )
+                    )
+                }
+            },
+        )
+            .run()
+    } catch (e: Exception) {
+        if (e is IllegalStateException || e is IllegalArgumentException) {
+            println(e.message)
+            exitProcess(1)
+        }
+        e.printStackTrace()
+        exitProcess(2)
+    }
 }
 
-private fun verifyNotRunYet() {
-    val file = File(LAST_RUN_FILE)
+private fun verifyNotRunYet(configName: String) {
+    val file = File("last_run-$configName.txt")
     if (file.exists()) {
-        error("Already done! Delete the $LAST_RUN_FILE file to allow another run.")
+        error("Already done! Delete the ${file.name} file to allow another run.")
     } else {
         file.writeText(Instant.now().toString())
     }
 }
+
+private fun sanitizeConfigName(configName: String) =
+    configName.filter { it.isLetterOrDigit() }

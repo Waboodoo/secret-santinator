@@ -11,6 +11,8 @@ class SingleCycleMatchMaker(
 
         val gifters = people.shuffled(random)
         val giftees = gifters.drop(1).plus(gifters.first())
-        return gifters.zip(giftees, ::Match).toSet()
+        return gifters.zip(giftees, ::Match)
+            .sortedBy { it.gifter.id }
+            .toSet()
     }
 }

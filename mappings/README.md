@@ -1,1 +1,1 @@
-When a mapping is generated, it is stored in this directory as a JSON file.
+When a mapping is generated, it is stored here as a JSON file in a subdirectory based on the config name.

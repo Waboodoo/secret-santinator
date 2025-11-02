@@ -1,6 +1,5 @@
 package ch.rmy.secretsanta.output
 
-import ch.rmy.secretsanta.ConfigFiles
 import ch.rmy.secretsanta.MappingHandler
 import ch.rmy.secretsanta.mapping.Match
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -11,7 +10,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class StoreMappingHandler(
-    private val mappingsDirectory: File = File(ConfigFiles.MAPPINGS_DIR),
+    private val mappingsDirectory: File,
 ) : MappingHandler {
 
     private val json = Json {
@@ -20,6 +19,7 @@ class StoreMappingHandler(
 
     @OptIn(ExperimentalSerializationApi::class)
     override fun handle(mapping: Set<Match>) {
+        mappingsDirectory.mkdirs()
         val outputFile = File(mappingsDirectory, createFileName())
         outputFile.outputStream().use { outStream ->
             json
@@ -32,8 +32,8 @@ class StoreMappingHandler(
         }
     }
 
-    private fun createFileName(): String =
-        DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.now())
-            .replace(":", "_")
-            .plus(".json")
+    private fun createFileName(): String {
+        val timestamp = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.now())
+        return "${timestamp.replace(":", "_")}.json"
+    }
 }

@@ -1,0 +1,4 @@
+host: mail.example.com
+port: 25
+username: santa@example.com
+password: Password1

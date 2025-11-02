@@ -46,7 +46,6 @@ bin/
 .DS_Store
 
 ### App specific ###
-last_run.txt
-people.yml
-email_config.yml
-mappings/**.json
+last_run-*
+config-*
+mappings/*/*.json

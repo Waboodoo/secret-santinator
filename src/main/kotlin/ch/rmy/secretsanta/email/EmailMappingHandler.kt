@@ -6,11 +6,10 @@ import ch.rmy.secretsanta.people.Person
 import java.time.LocalDate
 
 class EmailMappingHandler(
-    private val configProvider: EmailConfigProvider = EmailConfigProvider(),
-    mailerFactory: MailerFactory = MailerFactory(),
+    private val messageConfig: EmailMessageConfig,
+    private val mailer: Mailer,
 ) : MappingHandler {
-    private val mailer = mailerFactory.create(configProvider.server)
-    private val sender = with(configProvider.message) {
+    private val sender = with(messageConfig) {
         EmailContact(senderName, senderAddress)
     }
 
@@ -19,8 +18,8 @@ class EmailMappingHandler(
             mailer.sendEmail(
                 sender,
                 receiver = match.gifter.toEmailContact(),
-                subject = configProvider.message.subject.rendered(match),
-                htmlBody = configProvider.message.htmlBody.rendered(match),
+                subject = messageConfig.subject.rendered(match),
+                htmlBody = messageConfig.htmlBody.rendered(match),
             )
         }
     }
