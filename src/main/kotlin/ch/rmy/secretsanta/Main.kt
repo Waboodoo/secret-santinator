@@ -27,12 +27,13 @@ fun main(args: Array<String>) {
 
         val configDir = File(CONFIG_PREFIX + configName)
         val mappingsDir = File(ConfigFiles.MAPPINGS_DIR, configName)
+        val mappings = PastMappingReader(
+            mappingsDirectory = mappingsDir,
+        ).read()
 
         val matchMaker = VarietyMatchMaker(
             delegate = SingleCycleMatchMaker(),
-            discouragedMappings = PastMappingReader(
-                mappingsDirectory = mappingsDir,
-            ).read(),
+            discouragedMappings = mappings,
         )
 
         SecretSantinator(

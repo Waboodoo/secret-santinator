@@ -8,7 +8,7 @@ import ch.rmy.secretsanta.people.PersonId
  */
 class VarietyMatchMaker(
     private val delegate: MatchMaker,
-    private val discouragedMappings: Map<PersonId, Set<PersonId>>,
+    private val discouragedMappings: Set<Mapping>,
     private val iterations: Int = 20,
 ) : MatchMaker {
     init {
@@ -19,11 +19,19 @@ class VarietyMatchMaker(
         var bestMappingSoFar: Set<Match>? = null
         var bestProblemCountSoFar: Int = Int.MAX_VALUE
 
+        val discouragedMatches = buildMap {
+            discouragedMappings.forEach { mapping ->
+                mapping.matches.forEach { (gifter, giftee) ->
+                    put(gifter, (get(gifter) ?: setOf()) + giftee)
+                }
+            }
+        }
+
         repeat(iterations) {
             val mapping = delegate.run(people)
 
             val problemCount = mapping.count { match ->
-                discouragedMappings[match.gifter.id]?.contains(match.giftee.id) == true
+                discouragedMatches[match.gifter.id]?.contains(match.giftee.id) == true
             }
 
             if (problemCount == 0) {
