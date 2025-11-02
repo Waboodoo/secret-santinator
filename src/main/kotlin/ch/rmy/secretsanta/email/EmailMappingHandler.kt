@@ -2,24 +2,26 @@ package ch.rmy.secretsanta.email
 
 import ch.rmy.secretsanta.mapping.Match
 import ch.rmy.secretsanta.MappingHandler
+import ch.rmy.secretsanta.TimeProvider
 import ch.rmy.secretsanta.people.Person
 import java.time.LocalDate
 
 class EmailMappingHandler(
     private val messageConfig: EmailMessageConfig,
     private val mailer: Mailer,
+    private val timeProvider: TimeProvider = TimeProvider.default,
 ) : MappingHandler {
     private val sender = with(messageConfig) {
         EmailContact(senderName, senderAddress)
     }
 
-    override fun handle(matches: Set<Match>) {
-        matches.forEach { match ->
+    override fun handle(matches: Map<Person, Person>) {
+        matches.forEach { (gifter, giftee) ->
             mailer.sendEmail(
                 sender,
-                receiver = match.gifter.toEmailContact(),
-                subject = messageConfig.subject.rendered(match),
-                htmlBody = messageConfig.htmlBody.rendered(match),
+                receiver = gifter.toEmailContact(),
+                subject = messageConfig.subject.rendered(gifter, giftee),
+                htmlBody = messageConfig.htmlBody.rendered(gifter, giftee),
             )
         }
     }
@@ -27,9 +29,9 @@ class EmailMappingHandler(
     private fun Person.toEmailContact() =
         EmailContact(name, email)
 
-    private fun String.rendered(match: Match): String =
-        replace("{gifter.name}", match.gifter.name)
-            .replace("{giftee.name}", match.giftee.name)
-            .replace("{gifter.id}", match.gifter.id)
-            .replace("{year}", LocalDate.now().year.toString())
+    private fun String.rendered(gifter: Person, giftee: Person): String =
+        replace("{gifter.name}", gifter.name)
+            .replace("{giftee.name}", giftee.name)
+            .replace("{gifter.id}", gifter.id)
+            .replace("{year}", timeProvider.now().year.toString())
 }

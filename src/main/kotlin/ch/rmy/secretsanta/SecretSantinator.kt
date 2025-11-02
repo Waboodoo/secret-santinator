@@ -10,8 +10,13 @@ class SecretSantinator(
 ) {
     fun run() {
         val people = peopleProvider.getPeople()
-        require(people.size >= 2) { "At least 2 people are required" }
-        val matches = matchMaker.run(people)
-        mappingHandlers.forEach { it.handle(matches) }
+        require(people.size >= 3) { "At least 3 people are required" }
+
+        val personIds = people.map { it.id }.toSet()
+        val matches = matchMaker.run(personIds)
+
+        val peopleMap = people.associateBy { it.id }
+        val mapping = matches.associate { peopleMap[it.gifter]!! to peopleMap[it.giftee]!! }
+        mappingHandlers.forEach { it.handle(mapping) }
     }
 }

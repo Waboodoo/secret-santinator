@@ -5,15 +5,14 @@ import kotlin.math.roundToInt
 
 class CycleLengthScorer(
     private val maxScore: Int = 10,
-
-): Scorer {
+) : Scorer {
     override fun score(matches: Set<Match>): Int {
         val length = matches.size
         var shortestCycle = Int.MAX_VALUE
 
         val graph = matches.associateBy { it.gifter }
 
-        matches.forEach{ match ->
+        matches.forEach { match ->
             var cl = 0
             var next = graph[match.gifter]!!
 
@@ -22,11 +21,11 @@ class CycleLengthScorer(
                 cl++
             } while (next != match)
 
-            if(cl < shortestCycle) {
+            if (cl < shortestCycle) {
                 shortestCycle = cl
             }
         }
 
-        return (((shortestCycle.toFloat() - 2) / (length.toFloat() - 2)) * this.maxScore).roundToInt()
+        return (((shortestCycle.toFloat() - 2) / (length.toFloat() - 2)) * maxScore).roundToInt()
     }
 }

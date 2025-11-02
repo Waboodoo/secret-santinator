@@ -1,7 +1,7 @@
 package ch.rmy.secretsanta
 
-import ch.rmy.secretsanta.mapping.Match
+import ch.rmy.secretsanta.people.Person
 
 interface MappingHandler {
-    fun handle(matches: Set<Match>)
+    fun handle(matches: Map<Person, Person>)
 }

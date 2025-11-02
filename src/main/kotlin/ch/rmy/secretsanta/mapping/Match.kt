@@ -1,11 +1,11 @@
 package ch.rmy.secretsanta.mapping
 
-import ch.rmy.secretsanta.people.Person
+import ch.rmy.secretsanta.people.PersonId
 
 data class Match(
-    val gifter: Person,
-    val giftee: Person,
+    val gifter: PersonId,
+    val giftee: PersonId,
 ) {
     override fun toString() =
-        "[${gifter.id} -> ${giftee.id}]"
+        "[$gifter -> $giftee]"
 }
