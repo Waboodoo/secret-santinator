@@ -1,8 +1,11 @@
-package ch.rmy.secretsanta
+package ch.rmy.secretsanta.mapping
 
-import ch.rmy.secretsanta.mapping.Match
-import ch.rmy.secretsanta.mapping.SingleCycleMatchMaker
-import ch.rmy.secretsanta.people.Person
+import ch.rmy.secretsanta.mapping.TestData.PERSON1
+import ch.rmy.secretsanta.mapping.TestData.PERSON2
+import ch.rmy.secretsanta.mapping.TestData.PERSON3
+import ch.rmy.secretsanta.mapping.TestData.PERSON4
+import ch.rmy.secretsanta.mapping.TestData.PERSON5
+import ch.rmy.secretsanta.mapping.TestData.PERSON6
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -17,7 +20,7 @@ class SingleCycleMatchMakerTest {
         val people = setOf(
             PERSON1, PERSON2, PERSON3, PERSON4, PERSON5, PERSON6,
         )
-       val matches = matchMaker.run(people)
+        val matches = matchMaker.run(people)
 
         assertEquals(
             setOf(
@@ -30,16 +33,5 @@ class SingleCycleMatchMakerTest {
             ),
             matches,
         )
-    }
-
-    companion object {
-        val PERSON1 = person("1")
-        val PERSON2 = person("2")
-        val PERSON3 = person("3")
-        val PERSON4 = person("4")
-        val PERSON5 = person("5")
-        val PERSON6 = person("6")
-
-        private fun person(id: String) = Person(id = id, name = "Person$id", email = "person$id@example.com")
     }
 }
