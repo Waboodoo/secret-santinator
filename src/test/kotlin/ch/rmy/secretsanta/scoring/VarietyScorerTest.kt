@@ -135,6 +135,36 @@ class VarietyScorerTest {
     }
 
     @Test
+    fun `Scores correctly against full match with custom weight`() {
+        val matches = setOf(
+            Match("A", "B"),
+            Match("B", "C"),
+            Match("C", "D"),
+            Match("D", "E"),
+            Match("E", "F"),
+            Match("F", "G"),
+            Match("G", "H"),
+            Match("H", "A"),
+        )
+
+        val mapping = Mapping(
+            matches = matches.associate { it.gifter to it.giftee },
+            scoreMultiplier = 3.0f,
+        )
+
+
+        val scorer = VarietyScorer(
+            mappings = setOf(mapping),
+            timeProvider = { LocalDate.of(2025, 12, 12) }
+        )
+
+        val score = scorer.score(matches)
+        assertEquals(-30, score)
+
+    }
+
+
+    @Test
     fun `Scores correctly against partial match without year`() {
         val matches = setOf(
             Match("A", "B"),
