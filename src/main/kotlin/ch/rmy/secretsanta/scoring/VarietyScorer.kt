@@ -29,12 +29,12 @@ class VarietyScorer(
             return 1.0f
         }
 
-        return Math.E.pow((-timePassed+1).toDouble() / 2).toFloat()
+        return Math.E.pow((-timePassed + 1).toDouble() / 2).toFloat()
 
     }
 
     private fun scoreVsOne(matches: Set<Match>, pastMatches: Map<PersonId, PersonId>): Int {
-        var numberOfDuplicates = matches.count{ match -> pastMatches.get(match.gifter.id) == match.giftee.id }
+        val numberOfDuplicates = matches.count { match -> pastMatches[match.gifter] == match.giftee }
         return ((numberOfDuplicates.toFloat() / matches.size.toFloat()) * maxNegativeScore).roundToInt()
 
     }

@@ -4,6 +4,7 @@ import ch.rmy.secretsanta.MappingHandler
 import ch.rmy.secretsanta.TimeProvider
 import ch.rmy.secretsanta.mapping.Mapping
 import ch.rmy.secretsanta.mapping.Match
+import ch.rmy.secretsanta.people.Person
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToStream
@@ -23,16 +24,18 @@ class StoreMappingHandler(
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    override fun handle(matches: Set<Match>) {
+    override fun handle(matches: Map<Person, Person>) {
         val now = timeProvider.now()
 
         mappingsDirectory.mkdirs()
         val outputFile = File(mappingsDirectory, createFileName(now))
 
         val mapping = Mapping(
-            matches = matches.associate { (gifter, giftee) ->
-                gifter.id to giftee.id
-            },
+            matches = matches
+                .map { (gifter, giftee) ->
+                    gifter.id to giftee.id
+                }
+                .toMap(),
             year = now.year,
         )
 

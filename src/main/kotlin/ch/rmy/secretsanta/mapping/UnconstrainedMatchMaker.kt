@@ -1,6 +1,6 @@
 package ch.rmy.secretsanta.mapping
 
-import ch.rmy.secretsanta.people.Person
+import ch.rmy.secretsanta.people.PersonId
 import kotlin.random.Random
 
 /**
@@ -11,7 +11,7 @@ class UnconstrainedMatchMaker(
     private val subdivisionGenerator: SubdivisionGenerator = SubdivisionGenerator(),
     private val delegate: MatchMaker,
 ) : MatchMaker {
-    override fun run(people: Set<Person>): Set<Match> {
+    override fun run(people: Set<PersonId>): Set<Match> {
         val subdivisions = subdivisionGenerator.generate(n = people.size)
         val subdivision = subdivisions.random(random)
         val peopleIterator = people
@@ -29,6 +29,7 @@ class UnconstrainedMatchMaker(
             .flatMap { peopleSubset ->
                 delegate.run(peopleSubset)
             }
+            .sortedBy { it.gifter }
             .toSet()
     }
 }

@@ -26,7 +26,7 @@ fun main(args: Array<String>) {
             ?.let(::sanitizeConfigName)
             ?: error("No valid config name provided")
 
-        //verifyNotRunYet(configName)
+        verifyNotRunYet(configName)
 
         val configDir = File(CONFIG_PREFIX + configName)
         val mappingsDir = File(ConfigFiles.MAPPINGS_DIR, configName)
@@ -67,7 +67,7 @@ fun main(args: Array<String>) {
                             messageConfig = File(configDir, ConfigFiles.EMAIL_MESSAGE).readYaml(),
                             mailer = Mailer(
                                 File(configDir, ConfigFiles.EMAIL_SERVER).readYaml()
-                            )
+                            ),
                         )
                     )
                 }

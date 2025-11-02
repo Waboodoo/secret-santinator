@@ -1,51 +1,42 @@
 package ch.rmy.secretsanta.scoring
 
-import ch.rmy.secretsanta.mapping.TestData.PERSON1
-import ch.rmy.secretsanta.mapping.TestData.PERSON2
-import ch.rmy.secretsanta.mapping.TestData.PERSON3
-import ch.rmy.secretsanta.mapping.TestData.PERSON4
-import ch.rmy.secretsanta.mapping.TestData.PERSON5
-import ch.rmy.secretsanta.mapping.TestData.PERSON6
-import ch.rmy.secretsanta.mapping.TestData.PERSON7
-import ch.rmy.secretsanta.mapping.TestData.PERSON8
 import ch.rmy.secretsanta.mapping.Match
-import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class CycleLengthScorerTest {
 
     @Test
-    fun `Scores correctly`() {
+    fun `scores correctly`() {
         val fullCycleMapping = setOf(
-            Match(PERSON1, PERSON2),
-            Match(PERSON2, PERSON3),
-            Match(PERSON3, PERSON4),
-            Match(PERSON4, PERSON5),
-            Match(PERSON5, PERSON6),
-            Match(PERSON6, PERSON7),
-            Match(PERSON7, PERSON8),
-            Match(PERSON8, PERSON1),
+            Match("A", "B"),
+            Match("B", "C"),
+            Match("C", "D"),
+            Match("D", "E"),
+            Match("E", "F"),
+            Match("F", "G"),
+            Match("G", "H"),
+            Match("H", "A"),
         )
         val tinyCycleMapping = setOf(
-            Match(PERSON1, PERSON2),
-            Match(PERSON2, PERSON1),
-            Match(PERSON3, PERSON4),
-            Match(PERSON4, PERSON5),
-            Match(PERSON5, PERSON3),
-            Match(PERSON6, PERSON7),
-            Match(PERSON7, PERSON8),
-            Match(PERSON8, PERSON6),
+            Match("A", "B"),
+            Match("B", "A"),
+            Match("C", "D"),
+            Match("D", "E"),
+            Match("E", "C"),
+            Match("F", "G"),
+            Match("G", "H"),
+            Match("H", "F"),
         )
         val midCycleMapping = setOf(
-            Match(PERSON1, PERSON2),
-            Match(PERSON2, PERSON3),
-            Match(PERSON3, PERSON4),
-            Match(PERSON4, PERSON1),
-            Match(PERSON5, PERSON6),
-            Match(PERSON6, PERSON7),
-            Match(PERSON7, PERSON8),
-            Match(PERSON8, PERSON5),
+            Match("A", "B"),
+            Match("B", "C"),
+            Match("C", "D"),
+            Match("D", "A"),
+            Match("E", "F"),
+            Match("F", "G"),
+            Match("G", "H"),
+            Match("H", "E"),
         )
 
         val scorer = CycleLengthScorer()

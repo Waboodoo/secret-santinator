@@ -1,6 +1,6 @@
 package ch.rmy.secretsanta.mapping
 
-import ch.rmy.secretsanta.people.Person
+import ch.rmy.secretsanta.people.PersonId
 import ch.rmy.secretsanta.scoring.Scorer
 import kotlin.random.Random
 
@@ -34,7 +34,7 @@ class ScoredMatchMaker(
         return candidates[choice]
     }
 
-    override fun run(people: Set<Person>): Set<Match> {
+    override fun run(people: Set<PersonId>): Set<Match> {
         val candidates = List(iterations) { delegate.run(people) }
 
         val scores = candidates.map { candidate ->
