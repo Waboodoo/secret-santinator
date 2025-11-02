@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.serialization") version "2.2.21"
+    application
 }
 
 group = "ch.rmy.secretsanta"
@@ -17,6 +18,10 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation("io.mockk:mockk:1.14.6")
+}
+
+application {
+    mainClass.set("ch.rmy.secretsanta.MainKt")
 }
 
 tasks.test {
