@@ -3,11 +3,10 @@ package ch.rmy.secretsanta.output
 import ch.rmy.secretsanta.MappingHandler
 import ch.rmy.secretsanta.TimeProvider
 import ch.rmy.secretsanta.mapping.Mapping
-import ch.rmy.secretsanta.mapping.Match
 import ch.rmy.secretsanta.people.Person
+import ch.rmy.secretsanta.writeJson
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToStream
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -23,7 +22,6 @@ class StoreMappingHandler(
         prettyPrintIndent = "  "
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
     override fun handle(matches: Map<Person, Person>) {
         val now = timeProvider.now()
 
@@ -39,9 +37,7 @@ class StoreMappingHandler(
             year = now.year,
         )
 
-        outputFile.outputStream().use { outStream ->
-            json.encodeToStream(mapping, outStream)
-        }
+        json.writeJson(outputFile, mapping)
     }
 
     private fun createFileName(now: LocalDate) =
