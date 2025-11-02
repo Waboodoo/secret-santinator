@@ -13,8 +13,8 @@ class EmailMappingHandler(
         EmailContact(senderName, senderAddress)
     }
 
-    override fun handle(mapping: Set<Match>) {
-        mapping.forEach { match ->
+    override fun handle(matches: Set<Match>) {
+        matches.forEach { match ->
             mailer.sendEmail(
                 sender,
                 receiver = match.gifter.toEmailContact(),
