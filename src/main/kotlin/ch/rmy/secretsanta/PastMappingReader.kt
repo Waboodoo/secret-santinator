@@ -1,5 +1,6 @@
-package ch.rmy.secretsanta.output
+package ch.rmy.secretsanta
 
+import ch.rmy.secretsanta.mapping.Mapping
 import ch.rmy.secretsanta.people.PersonId
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -10,15 +11,12 @@ class PastMappingReader(
     private val mappingsDirectory: File,
 ) {
     @OptIn(ExperimentalSerializationApi::class)
-    fun read(): Map<PersonId, Set<PersonId>> = buildMap<PersonId, MutableSet<PersonId>> {
+    fun read(): Set<Mapping> =
         (mappingsDirectory.listFiles { _, name -> name.endsWith(".json") } ?: emptyArray<File>())
-            .forEach { mappingFile ->
+            .map { mappingFile ->
                 mappingFile.inputStream().use { inputStream ->
-                    Json.decodeFromStream<Map<PersonId, PersonId>>(inputStream)
+                    Json.decodeFromStream<Mapping>(inputStream)
                 }
-                    .forEach { (gifterId, gifteeId) ->
-                        getOrPut(gifterId) { mutableSetOf() }.add(gifteeId)
-                    }
             }
-    }
+            .toSet()
 }

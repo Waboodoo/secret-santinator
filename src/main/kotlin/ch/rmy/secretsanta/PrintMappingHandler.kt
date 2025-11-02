@@ -4,8 +4,8 @@ import ch.rmy.secretsanta.mapping.Match
 import ch.rmy.secretsanta.people.Person
 
 object PrintMappingHandler : MappingHandler {
-    override fun handle(mapping: Set<Match>) {
-        mapping.forEach { (gifter, giftee) ->
+    override fun handle(matches: Set<Match>) {
+        matches.forEach { (gifter, giftee) ->
             println("${gifter.formatted()} \t => \t ${giftee.formatted()}")
         }
     }

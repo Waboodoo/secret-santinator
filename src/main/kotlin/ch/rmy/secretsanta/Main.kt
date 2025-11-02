@@ -4,7 +4,7 @@ import ch.rmy.secretsanta.email.EmailMappingHandler
 import ch.rmy.secretsanta.email.Mailer
 import ch.rmy.secretsanta.mapping.SingleCycleMatchMaker
 import ch.rmy.secretsanta.mapping.VarietyMatchMaker
-import ch.rmy.secretsanta.output.PastMappingReader
+import ch.rmy.secretsanta.PastMappingReader
 import ch.rmy.secretsanta.output.StoreMappingHandler
 import ch.rmy.secretsanta.people.PeopleProvider
 import java.io.File
