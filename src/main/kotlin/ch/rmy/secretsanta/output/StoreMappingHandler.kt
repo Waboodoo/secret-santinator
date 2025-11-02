@@ -16,8 +16,10 @@ class StoreMappingHandler(
     private val timeProvider: TimeProvider = TimeProvider.default,
 ) : MappingHandler {
 
+    @OptIn(ExperimentalSerializationApi::class)
     private val json = Json {
         prettyPrint = true
+        prettyPrintIndent = "  "
     }
 
     @OptIn(ExperimentalSerializationApi::class)
