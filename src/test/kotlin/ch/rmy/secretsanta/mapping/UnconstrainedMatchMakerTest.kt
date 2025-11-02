@@ -25,12 +25,7 @@ class UnconstrainedMatchMakerTest {
                     listOf(2, 3, 3),
                 )
             },
-            delegate = { gifters ->
-                val giftees = gifters.drop(1).plus(gifters.first())
-                gifters.zip(giftees, ::Match)
-                    .sortedBy { it.gifter.id }
-                    .toSet()
-            },
+            delegate = DeterministicSingleCycleMatchMaker(),
         )
         val people = setOf(
             PERSON1,

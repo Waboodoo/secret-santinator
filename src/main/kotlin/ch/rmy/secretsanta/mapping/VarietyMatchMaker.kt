@@ -3,6 +3,9 @@ package ch.rmy.secretsanta.mapping
 import ch.rmy.secretsanta.people.Person
 import ch.rmy.secretsanta.people.PersonId
 
+/**
+ * Generates a valid mapping, while trying to avoid as many discouraged matches as possible.
+ */
 class VarietyMatchMaker(
     private val delegate: MatchMaker,
     private val discouragedMappings: Map<PersonId, Set<PersonId>>,

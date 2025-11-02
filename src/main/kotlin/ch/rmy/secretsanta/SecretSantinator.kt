@@ -10,6 +10,7 @@ class SecretSantinator(
 ) {
     fun run() {
         val people = peopleProvider.getPeople()
+        require(people.size >= 2) { "At least 2 people are required" }
         val matches = matchMaker.run(people)
         mappingHandlers.forEach { it.handle(matches) }
     }

@@ -3,6 +3,9 @@ package ch.rmy.secretsanta.mapping
 import ch.rmy.secretsanta.people.Person
 import kotlin.random.Random
 
+/**
+ * Generates an arbitrary valid mapping
+ */
 class UnconstrainedMatchMaker(
     private val random: Random = Random,
     private val subdivisionGenerator: SubdivisionGenerator = SubdivisionGenerator(),
