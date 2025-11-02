@@ -8,6 +8,6 @@ class CompositeScorer(
 
     override fun score(matches: Set<Match>): Int =
         scorers.fold(0) { score, scorer ->
-            score + scorer.score(matches)
+            if (score >= 0) score + scorer.score(matches) else score
         }
 }

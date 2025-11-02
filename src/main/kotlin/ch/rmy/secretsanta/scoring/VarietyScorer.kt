@@ -10,18 +10,18 @@ import kotlin.math.roundToInt
 class VarietyScorer(
     private val mappings: Set<Mapping>,
     private val timeProvider: TimeProvider = TimeProvider.default,
-    private val maxNegativeScore: Int = -10,
+    private val maxScore: Int = 10,
 ) : Scorer {
     override fun score(matches: Set<Match>): Int {
 
-        return mappings.fold(0) { score, pastMapping ->
-            score + (calculateFactorFor(pastMapping) * scoreVsOne(matches, pastMapping.matches)).roundToInt()
+        return mappings.fold(maxScore) { score, pastMapping ->
+            Math.min(score, maxScore - (calculateFactorFor(pastMapping) * scoreVsOne(matches, pastMapping.matches)).roundToInt())
         }
     }
 
     private fun calculateFactorFor(pastMapping: Mapping): Float {
         if (pastMapping.scoreMultiplier != null) {
-            return pastMapping.scoreMultiplier
+            return pastMapping.scoreMultiplier.toFloat()
         }
         if (pastMapping.year == null) {
             return 1.0f
@@ -32,13 +32,13 @@ class VarietyScorer(
             return 1.0f
         }
 
-        return Math.E.pow((-timePassed + 1).toDouble() / 2).toFloat()
+        return Math.E.pow((-timePassed + 1).toDouble()).toFloat()
 
     }
 
     private fun scoreVsOne(matches: Set<Match>, pastMatches: Map<PersonId, PersonId>): Int {
         val numberOfDuplicates = matches.count { match -> pastMatches[match.gifter] == match.giftee }
-        return ((numberOfDuplicates.toFloat() / matches.size.toFloat()) * maxNegativeScore).roundToInt()
+        return numberOfDuplicates * (maxScore)
 
     }
 }

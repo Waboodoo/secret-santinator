@@ -40,12 +40,13 @@ fun main(args: Array<String>) {
             ),
             scorer = CompositeScorer(
                 scorers = listOf(
-                    CycleLengthScorer(),
                     VarietyScorer(
                         mappings = pastMappings,
                     ),
+                    CycleLengthScorer(),
                 ),
             ),
+            iterations = 50,
         )
 
         SecretSantinator(
