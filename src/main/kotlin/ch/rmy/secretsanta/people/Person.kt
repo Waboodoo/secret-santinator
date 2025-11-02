@@ -7,7 +7,12 @@ data class Person(
     val name: String,
     val email: String,
     val id: PersonId = generateId(name, email),
-)
+) {
+    init {
+        require(name.isNotEmpty())
+        require(email.isNotEmpty())
+    }
+}
 
 private fun generateId(name: String, email: String): PersonId =
     arrayOf(
