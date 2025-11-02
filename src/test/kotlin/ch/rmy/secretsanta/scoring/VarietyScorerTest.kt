@@ -34,7 +34,7 @@ class VarietyScorerTest {
         )
 
         var score = scorer.score(matches)
-        assertEquals(-10, score)
+        assertEquals(-70, score)
 
     }
 
@@ -63,7 +63,7 @@ class VarietyScorerTest {
         )
 
         var score = scorer.score(matches)
-        assertEquals(-6, score)
+        assertEquals(-19, score)
 
     }
 
@@ -102,7 +102,7 @@ class VarietyScorerTest {
         )
 
         val score = scorer.score(matches)
-        assertEquals(-12, score)
+        assertEquals(-70, score)
 
     }
 
@@ -130,7 +130,7 @@ class VarietyScorerTest {
         )
 
         val score = scorer.score(matches)
-        assertEquals(-10, score)
+        assertEquals(-70, score)
 
     }
 
@@ -159,7 +159,7 @@ class VarietyScorerTest {
         )
 
         val score = scorer.score(matches)
-        assertEquals(-30, score)
+        assertEquals(-230, score)
 
     }
 
@@ -193,7 +193,7 @@ class VarietyScorerTest {
         )
 
         val score = scorer.score(matches)
-        assertEquals(-4, score)
+        assertEquals(-20, score)
     }
 
 }

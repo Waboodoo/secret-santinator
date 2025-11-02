@@ -3,6 +3,7 @@ package ch.rmy.secretsanta.mapping
 import ch.rmy.secretsanta.people.PersonId
 import ch.rmy.secretsanta.scoring.Scorer
 import kotlin.random.Random
+import kotlin.math.pow
 
 class ScoredMatchMaker(
     private val delegate: MatchMaker,
@@ -12,10 +13,11 @@ class ScoredMatchMaker(
 ) : MatchMaker {
 
     fun <T> pickByWeight(candidates: List<T>, weights: List<Int>): T {
-        val min = weights.min()
-        val weightsPositive = weights.map { s -> s - min }
+        val weightsPositive = weights.map { s -> Math.max(s, 0)  }
 
-        val cdf = weightsPositive
+        val weightsExponential = weightsPositive.map { s -> if (s > 0) Math.E.pow(s).toInt() else s }
+
+        val cdf = weightsExponential
             .scan(0) { sum, score ->
                 sum + score
             }
@@ -29,7 +31,7 @@ class ScoredMatchMaker(
 
         val pick = random.nextFloat() * cdfmax
         val choice = cdf.indexOfFirst { cdfscore -> cdfscore > pick }
-        println("Choice: $choice")
+        println("Choice: $choice (with score ${weightsPositive[choice]})")
 
         return candidates[choice]
     }
@@ -40,7 +42,6 @@ class ScoredMatchMaker(
         val scores = candidates.map { candidate ->
             scorer.score(candidate)
         }
-        println("Scores: $scores")
 
         return pickByWeight(candidates, scores)
 
