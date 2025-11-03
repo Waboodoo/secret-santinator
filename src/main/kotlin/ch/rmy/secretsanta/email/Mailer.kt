@@ -10,7 +10,7 @@ class Mailer(
 ) {
     private val mailer: SimpleMailer = MailerBuilder
         .withSMTPServer(serverConfig.host, serverConfig.port, serverConfig.username, serverConfig.password)
-        .withTransportStrategy(TransportStrategy.SMTP_TLS)
+        .withTransportStrategy(TransportStrategy.SMTPS)
         .buildMailer()
 
     fun sendEmail(
